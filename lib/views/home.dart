@@ -27,11 +27,10 @@ class _HomeState extends State<Home> {
       headers: {"Authorization": apiKey},
     );
 
-    //print(response.body.toString());
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
     jsonData["photos"].forEach((element) {
-      // print(element);
+
       WallpaperModel wallpaperModel = WallpaperModel();
       wallpaperModel = WallpaperModel.fromMap(element);
       wallpapers.add(wallpaperModel);

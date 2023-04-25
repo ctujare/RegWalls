@@ -1,4 +1,10 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 class ImageView extends StatefulWidget {
@@ -10,6 +16,9 @@ class ImageView extends StatefulWidget {
 }
 
 class _ImageViewState extends State<ImageView> {
+
+  var filePath;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,22 +41,34 @@ class _ImageViewState extends State<ImageView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  padding: EdgeInsets.all(20),
-                  width: MediaQuery.of(context).size.width/2.5,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24),
-                    color: Colors.white70
-                    ),
-                  child: Column(children: [
-                   Text('Download'),
-                  ],),
+                GestureDetector(
+                  onTap: () {
+                    _save();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    width: MediaQuery.of(context).size.width/2.5,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      color: Colors.white70,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black54,
+                          blurRadius: 15,
+                          offset: Offset(0, 5),
+                        ),
+                      ],
+                      ),
+                    child: Column(children: const [
+                     Text('Download'),
+                    ],),
+                  ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text('Cancel', style: TextStyle(color: Colors.white),),
-                SizedBox(
+                const Text('Cancel', style: TextStyle(color: Colors.white),),
+                const SizedBox(
                   height: 60,
                 )
               ],
@@ -57,4 +78,26 @@ class _ImageViewState extends State<ImageView> {
       ),
     );
   }
+
+  _save() async {
+    await _askPermission();
+    var response = await Dio().get(widget.imgUrl,
+        options: Options(responseType: ResponseType.bytes));
+    final result =
+    await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
+    print(result);
+    Navigator.pop(context);
+  }
+
+  _askPermission() async {
+    if (Platform.isIOS) {
+      Map<Permission, PermissionStatus> permissions =
+          await Permission.photos.request().
+          requestPermissions([Permission.photos]);
+    } else {
+      PermissionStatus permission = await PermissionHandler()
+          .checkPermissionStatus(Permission.storage);
+    }
+  }
+
 }
