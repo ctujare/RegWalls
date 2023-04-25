@@ -58,39 +58,57 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-                color: Color(0xffE9E9E9),
+                color: const Color(0xffE9E9E9),
                 borderRadius: BorderRadius.circular(15)),
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            margin: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
+                    controller: searchController,
                     decoration: InputDecoration(
-                        border: InputBorder.none, hintText: 'Search'),
+                      border: InputBorder.none,
+                      hintText: 'Search',
+                      suffixIcon: InkWell(
+                        onTap: () {
+                          print("Search ${searchController.text}");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Search(
+                                searchQuery: searchController.text,
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Icon(Icons.search),
+                      ),
+                    ),
                   ),
                 ),
                 // GestureDetector(
-                //   onTap: (){
-                //     Navigator.push(context, MaterialPageRoute(
-                //       builder: (context) => Search(
-                //         searchQuery: searchController.text,
-                //       )
-                //     ));
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => Search(
+                //           searchQuery: searchController.text,
+                //         ),
+                //       ),
+                //     );
                 //   },
                 // ),
-                GestureDetector(child:
-                  Container(child:
-                    Icon(Icons.search)
-                  ),
-                ),
+                // GestureDetector(child:
+                //   const Icon(Icons.search),
+                // ),
               ],
             ),
           ),
           const SizedBox(
             height: 16,
           ),
-          Container(
+          SizedBox(
             height: 60,
             child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
