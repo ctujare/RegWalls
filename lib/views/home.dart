@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:regwalls/data/data.dart';
 import 'package:regwalls/model/categories_model.dart';
 import 'package:regwalls/model/wallpaper_mode.dart';
+import 'package:regwalls/views/search.dart';
 import 'package:regwalls/widget/widget.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,10 +17,11 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<CategoriesModel> categories = [];
   List<WallpaperModel> wallpapers = [];
+  TextEditingController searchController = new TextEditingController();
 
   getTrendingWallpapers() async {
     var response = await http.get(
-      Uri.parse('https://api.pexels.com/v1/curated?per_page=15&page=1'),
+      Uri.parse('https://api.pexels.com/v1/curated?per_page=100&page=1'),
       headers: {"Authorization": apiKey},
     );
 
@@ -56,29 +58,42 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-                color: const Color(0xffE9E9E9),
+                color: Color(0xffE9E9E9),
                 borderRadius: BorderRadius.circular(15)),
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            margin: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            margin: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
-              children: const [
+              children: [
                 Expanded(
                   child: TextField(
                     decoration: InputDecoration(
                         border: InputBorder.none, hintText: 'Search'),
                   ),
                 ),
-                Icon(Icons.search),
+                // GestureDetector(
+                //   onTap: (){
+                //     Navigator.push(context, MaterialPageRoute(
+                //       builder: (context) => Search(
+                //         searchQuery: searchController.text,
+                //       )
+                //     ));
+                //   },
+                // ),
+                GestureDetector(child:
+                  Container(child:
+                    Icon(Icons.search)
+                  ),
+                ),
               ],
             ),
           ),
           const SizedBox(
             height: 16,
           ),
-          SizedBox(
+          Container(
             height: 60,
             child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 itemCount: categories.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
