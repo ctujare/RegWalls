@@ -26,17 +26,30 @@ class _ImageViewState extends State<ImageView> {
             )),
           ),
           Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            alignment: Alignment.bottomCenter,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
+                  padding: EdgeInsets.all(20),
+                  width: MediaQuery.of(context).size.width/2.5,
                   decoration: BoxDecoration(
-                    color: Colors.black
+                    borderRadius: BorderRadius.circular(24),
+                    color: Colors.white70
                     ),
                   child: Column(children: [
                    Text('Download'),
                   ],),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
                 Text('Cancel', style: TextStyle(color: Colors.white),),
+                SizedBox(
+                  height: 60,
+                )
               ],
             ),
           )
