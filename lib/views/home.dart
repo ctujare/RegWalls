@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:regwalls/data/data.dart';
 import 'package:regwalls/model/categories_model.dart';
 import 'package:regwalls/model/wallpaper_mode.dart';
+import 'package:regwalls/views/category.dart';
+import 'package:regwalls/views/image_view.dart';
 import 'package:regwalls/views/search.dart';
 import 'package:regwalls/widget/widget.dart';
 import 'package:http/http.dart' as http;
@@ -120,35 +122,44 @@ class CategorieTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(right: 10),
-      child: Stack(
-        children: <Widget>[
-          ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Image.network(
-                imgUrl,
-                height: 50,
-                width: 100,
-                fit: BoxFit.cover,
-              )),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.black12,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) => Category(
+            categoryName: title.toLowerCase()
+          )
+        ));
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 10),
+        child: Stack(
+          children: <Widget>[
+            ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.network(
+                  imgUrl,
+                  height: 50,
+                  width: 100,
+                  fit: BoxFit.cover,
+                )),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.black12,
+              ),
+              height: 50,
+              width: 100,
+              alignment: Alignment.center,
+              child: Text(
+                title,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16),
+              ),
             ),
-            height: 50,
-            width: 100,
-            alignment: Alignment.center,
-            child: Text(
-              title,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
