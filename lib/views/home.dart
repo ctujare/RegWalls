@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Search',
-                      suffixIcon: InkWell(
+                      suffixIcon: GestureDetector(
                         onTap: () {
                           print("Search ${searchController.text}");
                           Navigator.push(
@@ -87,21 +87,6 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                // GestureDetector(
-                //   onTap: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (context) => Search(
-                //           searchQuery: searchController.text,
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // ),
-                // GestureDetector(child:
-                //   const Icon(Icons.search),
-                // ),
               ],
             ),
           ),
