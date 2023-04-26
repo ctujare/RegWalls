@@ -79,7 +79,15 @@ class _SearchState extends State<Search> {
                           hintText: 'Search',
                           suffixIcon: GestureDetector(
                             onTap: () {
-                              getSearchWallpapers(searchController.text);
+                              print("Search ${searchController.text}");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Search(
+                                    searchQuery: searchController.text,
+                                  ),
+                                ),
+                              );
                             },
                             child: Container(child: const Icon(Icons.search)),
                           ),
