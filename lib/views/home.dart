@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Search',
-                      hintStyle: TextStyle(
+                      hintStyle: const TextStyle(
                         color: Colors.black,
                       ),
                       suffixIcon: GestureDetector(
@@ -98,14 +98,14 @@ class _HomeState extends State<Home> {
             height: 16,
           ),
           SizedBox(
-            height: 60,
+            height: 50,
             child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 itemCount: categories.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return CategorieTile(
+                  return CategoryTile(
                     title: categories[index].categorieName,
                     imgUrl: categories[index].imgUrl,
                   );
@@ -118,9 +118,9 @@ class _HomeState extends State<Home> {
   }
 }
 
-class CategorieTile extends StatelessWidget {
+class CategoryTile extends StatelessWidget {
   final String imgUrl, title;
-  CategorieTile({super.key, required this.title, required this.imgUrl});
+  const CategoryTile({super.key, required this.title, required this.imgUrl});
 
   @override
   Widget build(BuildContext context) {
