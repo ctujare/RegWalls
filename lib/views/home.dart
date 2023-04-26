@@ -107,7 +107,6 @@ class _HomeState extends State<Home> {
                 itemBuilder: (context, index) {
                   return CategoryTile(
                     title: categories[index].categorieName,
-                    imgUrl: categories[index].imgUrl,
                   );
                 }),
           ),
@@ -119,8 +118,8 @@ class _HomeState extends State<Home> {
 }
 
 class CategoryTile extends StatelessWidget {
-  final String imgUrl, title;
-  const CategoryTile({super.key, required this.title, required this.imgUrl});
+  final String title;
+  const CategoryTile({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -134,33 +133,21 @@ class CategoryTile extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.only(right: 10),
-        child: Stack(
-          children: <Widget>[
-            ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.network(
-                  imgUrl,
-                  height: 50,
-                  width: 100,
-                  fit: BoxFit.cover,
-                )),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: Colors.black12,
-              ),
-              height: 50,
-              width: 100,
-              alignment: Alignment.center,
-              child: Text(
-                title,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16),
-              ),
-            ),
-          ],
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white12,
+          ),
+          height: 50,
+          width: 100,
+          alignment: Alignment.center,
+          child: Text(
+            title,
+            style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 16),
+          ),
         ),
       ),
     );
