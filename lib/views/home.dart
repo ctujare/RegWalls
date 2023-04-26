@@ -60,7 +60,7 @@ class _HomeState extends State<Home> {
           Container(
             decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(15)),
+                borderRadius: BorderRadius.circular(20)),
             padding: const EdgeInsets.symmetric(horizontal: 12),
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -146,7 +146,7 @@ class CategoryTile extends StatelessWidget {
                 )),
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(25),
                 color: Colors.black12,
               ),
               height: 50,
