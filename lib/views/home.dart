@@ -132,11 +132,11 @@ class CategoryTile extends StatelessWidget {
         ));
       },
       child: Container(
-        margin: const EdgeInsets.only(right: 10),
+        margin: const EdgeInsets.only(right: 8),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            color: Colors.white12,
+            color: Colors.white24,
           ),
           height: 50,
           width: 100,

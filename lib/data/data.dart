@@ -5,42 +5,49 @@ String apiKey = "01dV8NfN3Eve12VlKutbryGYulaFRbftOYYU5ev09mmG0JCSjD978reo";
 List<CategoriesModel> getCategories() {
 
   List<CategoriesModel> categories = [];
-  CategoriesModel categorieModel = CategoriesModel();
+  CategoriesModel categoryModel = CategoriesModel();
 
 
-  categorieModel.categorieName = "Street Art";
-  categories.add(categorieModel);
-  categorieModel = CategoriesModel();
+  categoryModel.categorieName = "Minimal";
+  categories.add(categoryModel);
+  categoryModel = CategoriesModel();
 
 
-  categorieModel.categorieName = "Wild Life";
-  categories.add(categorieModel);
-  categorieModel = CategoriesModel();
+  categoryModel.categorieName = "Pastel";
+  categories.add(categoryModel);
+  categoryModel = CategoriesModel();
 
 
-  categorieModel.categorieName = "Nature";
-  categories.add(categorieModel);
-  categorieModel = CategoriesModel();
+  categoryModel.categorieName = "Amoled";
+  categories.add(categoryModel);
+  categoryModel = CategoriesModel();
 
 
-  categorieModel.categorieName = "City";
-  categories.add(categorieModel);
-  categorieModel = CategoriesModel();
+  categoryModel.categorieName = "Street Art";
+  categories.add(categoryModel);
+  categoryModel = CategoriesModel();
 
 
-  categorieModel.categorieName = "Motivation";
-  categories.add(categorieModel);
-  categorieModel = CategoriesModel();
+  categoryModel.categorieName = "Nature";
+  categories.add(categoryModel);
+  categoryModel = CategoriesModel();
 
 
-  categorieModel.categorieName = "Bikes";
-  categories.add(categorieModel);
-  categorieModel = CategoriesModel();
+  categoryModel.categorieName = "City";
+  categories.add(categoryModel);
+  categoryModel = CategoriesModel();
 
 
-  categorieModel.categorieName = "Cars";
-  categories.add(categorieModel);
-  categorieModel = CategoriesModel();
+  categoryModel.categorieName = "Football";
+  categories.add(categoryModel);
+  categoryModel = CategoriesModel();
+
+
+  categoryModel.categorieName = "Cars";
+  categories.add(categoryModel);
+  categoryModel = CategoriesModel();
+
+
 
   return categories;
 }
