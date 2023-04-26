@@ -20,57 +20,59 @@ class _ImageViewState extends State<ImageView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Hero(
-            tag: widget.imgUrl,
-            child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Image.network(
-                  widget.imgUrl,
-                  fit: BoxFit.cover,
-                )),
-          ),
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    _save();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    width: MediaQuery.of(context).size.width / 2.5,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      color: Colors.white70,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black54,
-                          blurRadius: 15,
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: const [
-                        Text('Download', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
-                      ],
+    return FocusScope(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Hero(
+              tag: widget.imgUrl,
+              child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.network(
+                    widget.imgUrl,
+                    fit: BoxFit.cover,
+                  )),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      _save();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      width: MediaQuery.of(context).size.width / 2.5,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24),
+                        color: Colors.white70,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 15,
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: const [
+                          Text('Download', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 60,
-                )
-              ],
-            ),
-          )
-        ],
+                  const SizedBox(
+                    height: 60,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
