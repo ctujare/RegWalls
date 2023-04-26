@@ -87,7 +87,7 @@ class _ImageViewState extends State<ImageView> {
     }
   }
 
-  Future<bool> _askPermission() async {
+  _askPermission() async {
     if (Platform.isIOS) {
       if (await Permission.photos.request().isGranted) {
         return true;
