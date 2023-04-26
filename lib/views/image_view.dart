@@ -7,7 +7,8 @@ import 'package:permission_handler/permission_handler.dart';
 
 class ImageView extends StatefulWidget {
   String imgUrl;
-  ImageView({required this.imgUrl});
+  String originalUrl;
+  ImageView({required this.imgUrl, required this.originalUrl});
 
 
   @override
@@ -22,27 +23,15 @@ class _ImageViewState extends State<ImageView> {
     return Scaffold(
       body: Stack(
         children: [
-          FutureBuilder(
-            future: Future.delayed(Duration(seconds: 1), () => widget.imgUrl),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.hasData) {
-                return Hero(
-                  tag: snapshot.data!,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.network(
-                      snapshot.data!,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              } else {
-                return Center(
-                    child: RefreshProgressIndicator()
-                );
-              }
-            },
+          Hero(
+            tag: widget.imgUrl,
+            child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Image.network(
+                  widget.imgUrl,
+                  fit: BoxFit.cover,
+                )),
           ),
           Container(
             height: MediaQuery.of(context).size.height,
@@ -91,7 +80,7 @@ class _ImageViewState extends State<ImageView> {
 
     if (permission_status) {
 
-      var downloadUrl = widget.imgUrl.replaceAll('.portrait', '.original');
+      var downloadUrl = widget.originalUrl;
       var response = await Dio().get(downloadUrl,
           options: Options(responseType: ResponseType.bytes));
       final result =
