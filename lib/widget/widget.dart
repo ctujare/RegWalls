@@ -4,13 +4,15 @@ import 'package:regwalls/views/image_view.dart';
 import 'dart:async';
 
 Widget brandName() {
-  return RichText(
-    text: const TextSpan(
-      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-      children: <TextSpan>[
-        TextSpan(text: 'Reg', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-        TextSpan(text: 'Walls', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black45)),
-      ],
+  return Center(
+    child: RichText(
+      text: const TextSpan(
+        style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+        children: <TextSpan>[
+          TextSpan(text: 'Reg', style: TextStyle(color: Colors.white)),
+          TextSpan(text: 'Walls', style: TextStyle(color: Colors.grey)),
+        ],
+      ),
     ),
   );
 }
