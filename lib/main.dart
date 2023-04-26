@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:regwalls/views/home.dart';
 
 void main() {
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'RegWalls',
       theme: ThemeData(
         primaryColor: Colors.white,
+        textTheme: GoogleFonts.aBeeZeeTextTheme(),
       ),
       home: const Home(),
     );
