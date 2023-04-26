@@ -33,6 +33,6 @@ class SrcModel {
     return SrcModel(
         original: jsonData["original"],
         small: jsonData["small"],
-        portrait: jsonData["portrait"]);
+        portrait: jsonData["original"] + '?auto=compress&cs=tinysrgb&h=1920&w=1080');
   }
 }
