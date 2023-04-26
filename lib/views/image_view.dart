@@ -1,14 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ImageView extends StatefulWidget {
-  final String imgUrl;
+  String imgUrl;
   ImageView({required this.imgUrl});
+
 
   @override
   State<ImageView> createState() => _ImageViewState();
@@ -22,15 +22,27 @@ class _ImageViewState extends State<ImageView> {
     return Scaffold(
       body: Stack(
         children: [
-          Hero(
-            tag: widget.imgUrl,
-            child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Image.network(
-                  widget.imgUrl,
-                  fit: BoxFit.cover,
-                )),
+          FutureBuilder(
+            future: Future.delayed(Duration(seconds: 1), () => widget.imgUrl),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.hasData) {
+                return Hero(
+                  tag: snapshot.data!,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.network(
+                      snapshot.data!,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              } else {
+                return Center(
+                    child: RefreshProgressIndicator()
+                );
+              }
+            },
           ),
           Container(
             height: MediaQuery.of(context).size.height,
@@ -78,7 +90,9 @@ class _ImageViewState extends State<ImageView> {
     var permission_status = await _askPermission();
 
     if (permission_status) {
-      var response = await Dio().get(widget.imgUrl,
+
+      var downloadUrl = widget.imgUrl.replaceAll('.portrait', '.original');
+      var response = await Dio().get(downloadUrl,
           options: Options(responseType: ResponseType.bytes));
       final result =
           await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));

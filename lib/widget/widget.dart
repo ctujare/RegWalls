@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:regwalls/model/wallpaper_mode.dart';
 import 'package:regwalls/views/image_view.dart';
+import 'dart:async';
 
 Widget brandName() {
   return RichText(
