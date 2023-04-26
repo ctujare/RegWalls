@@ -55,17 +55,19 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.black,
           title: brandName(),
           elevation: 0.0
       ),
       body: Container(
+        color: Colors.black,
         child: Column(
           children: [
             SingleChildScrollView(
               child: Container(
                 decoration: BoxDecoration(
-                    color: const Color(0xffE9E9E9),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(15)),
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -89,7 +91,7 @@ class _SearchState extends State<Search> {
                                 ),
                               );
                             },
-                            child: Container(child: const Icon(Icons.search)),
+                            child: Container(child: const Icon(Icons.search, color: Colors.black,)),
                           ),
                         ),
                       ),

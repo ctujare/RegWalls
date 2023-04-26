@@ -49,9 +49,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         title: brandName(),
         elevation: 0.0,
       ),
@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-                color: const Color(0xffE9E9E9),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(15)),
             padding: const EdgeInsets.symmetric(horizontal: 12),
             margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -71,6 +71,9 @@ class _HomeState extends State<Home> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Search',
+                      hintStyle: TextStyle(
+                        color: Colors.black,
+                      ),
                       suffixIcon: GestureDetector(
                         onTap: () {
                           print("Search ${searchController.text}");
@@ -83,7 +86,7 @@ class _HomeState extends State<Home> {
                             ),
                           );
                         },
-                        child: const Icon(Icons.search),
+                        child: const Icon(Icons.search, color: Colors.black,),
                       ),
                     ),
                   ),

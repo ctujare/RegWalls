@@ -48,11 +48,13 @@ class _CategoryState extends State<Category> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.black,
           title: brandName(),
           elevation: 0.0
       ),
       body: Container(
+        color: Colors.black,
         child: Column(
           children: [
             SingleChildScrollView(
