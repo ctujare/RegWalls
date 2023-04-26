@@ -53,23 +53,15 @@ class _ImageViewState extends State<ImageView> {
                         BoxShadow(
                           color: Colors.black54,
                           blurRadius: 15,
-                          offset: Offset(0, 5),
                         ),
                       ],
                     ),
                     child: Column(
                       children: const [
-                        Text('Download'),
+                        Text('Download', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  'Cancel',
-                  style: TextStyle(color: Colors.white),
                 ),
                 const SizedBox(
                   height: 60,
@@ -100,13 +92,13 @@ class _ImageViewState extends State<ImageView> {
       if (await Permission.photos.request().isGranted) {
         return true;
       } else {
-        return false;
+        openAppSettings();
       }
     } else {
-      if (await Permission.photos.request().isGranted) {
+      if (await Permission.photos.request().isGranted || await Permission.storage.request().isGranted ) {
         return true;
       } else {
-        return false;
+        openAppSettings();
       }
     }
   }
