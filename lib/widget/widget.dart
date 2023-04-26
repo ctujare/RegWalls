@@ -33,7 +33,7 @@ Widget wallpapersList({required List<WallpaperModel> wallpapers, context}) {
             child: GestureDetector(
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ImageView(imgUrl: wallpaper.src!.portrait)
+                  builder: (context) => ImageView(imgUrl: wallpaper.src!.original)
                 ));
               },
               child: Hero(

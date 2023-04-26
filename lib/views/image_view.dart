@@ -95,18 +95,18 @@ class _ImageViewState extends State<ImageView> {
     }
   }
 
-  _askPermission() async {
+  Future<bool> _askPermission() async {
     if (Platform.isIOS) {
       if (await Permission.photos.request().isGranted) {
         return true;
       } else {
-        openAppSettings();
+        return false;
       }
     } else {
-      if (await Permission.storage.request().isGranted) {
+      if (await Permission.photos.request().isGranted) {
         return true;
       } else {
-        openAppSettings();
+        return false;
       }
     }
   }
