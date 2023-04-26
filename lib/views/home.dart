@@ -20,30 +20,45 @@ class _HomeState extends State<Home> {
   List<CategoriesModel> categories = [];
   List<WallpaperModel> wallpapers = [];
   TextEditingController searchController = new TextEditingController();
+  int currentPage = 1;
+  bool isLoading = false;
 
-  getTrendingWallpapers() async {
+  Future<void> getTrendingWallpapers() async {
+    if (isLoading) {
+      return;
+    }
+    setState(() {
+      isLoading = true;
+    });
+
     var response = await http.get(
-      Uri.parse('https://api.pexels.com/v1/curated?per_page=100&page=1'),
+      Uri.parse('https://api.pexels.com/v1/curated?per_page=100&page=$currentPage'),
       headers: {"Authorization": apiKey},
     );
 
-
-    Map<String, dynamic> jsonData = jsonDecode(response.body);
-    jsonData["photos"].forEach((element) {
-
-      WallpaperModel wallpaperModel = WallpaperModel();
-      wallpaperModel = WallpaperModel.fromMap(element);
-      wallpapers.add(wallpaperModel);
+    setState(() {
+      isLoading = false;
     });
 
-    setState(() {});
+    Map<String, dynamic> jsonData = jsonDecode(response.body);
+    List<WallpaperModel> newWallpapers = [];
+    jsonData["photos"].forEach((element) {
+      WallpaperModel wallpaperModel = WallpaperModel();
+      wallpaperModel = WallpaperModel.fromMap(element);
+      newWallpapers.add(wallpaperModel);
+    });
+
+    setState(() {
+      wallpapers.addAll(newWallpapers);
+      currentPage += 1;
+    });
   }
 
   @override
   void initState() {
-    getTrendingWallpapers();
-    categories = getCategories();
     super.initState();
+    categories = getCategories();
+    getTrendingWallpapers();
   }
 
   @override
@@ -110,12 +125,25 @@ class _HomeState extends State<Home> {
                   );
                 }),
           ),
-          wallpapersList(wallpapers: wallpapers, context: context)
+          Expanded(
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification scrollInfo) {
+                if (!isLoading &&
+                    scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+                  getTrendingWallpapers();
+                }
+                return true;
+              },
+              child: wallpapersList(wallpapers: wallpapers, context: context),
+            ),
+          ),
+          if (isLoading) const LinearProgressIndicator(),
         ],
       ),
     );
   }
 }
+
 
 class CategoryTile extends StatelessWidget {
   final String title;
