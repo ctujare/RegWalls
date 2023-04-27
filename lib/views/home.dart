@@ -20,45 +20,30 @@ class _HomeState extends State<Home> {
   List<CategoriesModel> categories = [];
   List<WallpaperModel> wallpapers = [];
   TextEditingController searchController = new TextEditingController();
-  int currentPage = 1;
-  bool isLoading = false;
 
-  Future<void> getTrendingWallpapers() async {
-    if (isLoading) {
-      return;
-    }
-    setState(() {
-      isLoading = true;
-    });
-
+  getTrendingWallpapers() async {
     var response = await http.get(
-      Uri.parse('https://api.pexels.com/v1/curated?per_page=100&page=$currentPage'),
+      Uri.parse('https://api.pexels.com/v1/curated?per_page=100&page=1'),
       headers: {"Authorization": apiKey},
     );
 
-    setState(() {
-      isLoading = false;
-    });
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
-    List<WallpaperModel> newWallpapers = [];
     jsonData["photos"].forEach((element) {
+
       WallpaperModel wallpaperModel = WallpaperModel();
       wallpaperModel = WallpaperModel.fromMap(element);
-      newWallpapers.add(wallpaperModel);
+      wallpapers.add(wallpaperModel);
     });
 
-    setState(() {
-      wallpapers.addAll(newWallpapers);
-      currentPage += 1;
-    });
+    setState(() {});
   }
 
   @override
   void initState() {
-    super.initState();
-    categories = getCategories();
     getTrendingWallpapers();
+    categories = getCategories();
+    super.initState();
   }
 
   @override
@@ -125,25 +110,12 @@ class _HomeState extends State<Home> {
                   );
                 }),
           ),
-          Expanded(
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (ScrollNotification scrollInfo) {
-                if (!isLoading &&
-                    scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
-                  getTrendingWallpapers();
-                }
-                return true;
-              },
-              child: wallpapersList(wallpapers: wallpapers, context: context),
-            ),
-          ),
-          if (isLoading) const LinearProgressIndicator(),
+          wallpapersList(wallpapers: wallpapers, context: context)
         ],
       ),
     );
   }
 }
-
 
 class CategoryTile extends StatelessWidget {
   final String title;
