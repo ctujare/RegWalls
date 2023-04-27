@@ -17,6 +17,18 @@ class ImageView extends StatefulWidget {
 
 class _ImageViewState extends State<ImageView> {
   var filePath;
+  bool _showContainer = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(milliseconds: 200), () {
+      setState(() {
+        _showContainer = true;
+      });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,57 +39,116 @@ class _ImageViewState extends State<ImageView> {
             Hero(
               tag: widget.imgUrl,
               child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  child: Image.network(
-                    widget.imgUrl,
-                    fit: BoxFit.cover,
-                  )),
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Image.network(
+                  widget.imgUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+            Align(
               alignment: Alignment.bottomCenter,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      _save();
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(20),
-                      width: MediaQuery.of(context).size.width / 2.5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24),
-                        color: Colors.white70,
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black54,
-                            blurRadius: 15,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: const [
-                          Text('Download', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400),),
-                        ],
-                      ),
+              child: Visibility(
+                visible: _showContainer,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
                     ),
                   ),
-                  const SizedBox(
-                    height: 60,
-                  )
-                ],
+                  height: MediaQuery.of(context).size.height / 9,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _save();
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 32),
+                          height: 40,
+                          width: MediaQuery.of(context).size.width / 2.3,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white,
+                          ),
+                          child: Align(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Align(
+                                  child: Text(
+                                    'High Quality',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _saveOriginal();
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 32),
+                          width: MediaQuery.of(context).size.width / 2.3,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'Original',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 
+
   _save() async {
+    var permission_status = await _askPermission();
+
+    if (permission_status) {
+
+      var downloadUrl = widget.imgUrl;
+      var response = await Dio().get(downloadUrl,
+          options: Options(responseType: ResponseType.bytes));
+      final result =
+          await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
+      print(result);
+      Navigator.pop(context);
+    }
+  }
+
+  _saveOriginal() async {
     var permission_status = await _askPermission();
 
     if (permission_status) {
@@ -86,7 +157,7 @@ class _ImageViewState extends State<ImageView> {
       var response = await Dio().get(downloadUrl,
           options: Options(responseType: ResponseType.bytes));
       final result =
-          await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
+      await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
       print(result);
       Navigator.pop(context);
     }
