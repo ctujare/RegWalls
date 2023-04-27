@@ -66,9 +66,6 @@ class _CategoryState extends State<Category> {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
             wallpapersList(wallpapers: wallpapers, context: context),
           ],
         ),

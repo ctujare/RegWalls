@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -59,7 +60,7 @@ class _ImageViewState extends State<ImageView> {
                       topLeft: Radius.circular(20),
                     ),
                   ),
-                  height: MediaQuery.of(context).size.height / 9,
+                  height: MediaQuery.of(context).size.height / 8,
                   width: MediaQuery.of(context).size.width,
                   alignment: Alignment.bottomCenter,
                   child: Row(
@@ -70,12 +71,12 @@ class _ImageViewState extends State<ImageView> {
                           _save();
                         },
                         child: Container(
-                          margin: const EdgeInsets.only(bottom: 32),
-                          height: 40,
+                          margin: const EdgeInsets.only(bottom: 35),
+                          height: 42,
                           width: MediaQuery.of(context).size.width / 2.3,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            color: Colors.white,
+                            color: Colors.white24,
                           ),
                           child: Align(
                             child: Row(
@@ -85,8 +86,9 @@ class _ImageViewState extends State<ImageView> {
                                   child: Text(
                                     'High Quality',
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w400,
+                                      color: Colors.white
                                     ),
                                   ),
                                 ),
@@ -100,12 +102,12 @@ class _ImageViewState extends State<ImageView> {
                           _saveOriginal();
                         },
                         child: Container(
-                          margin: const EdgeInsets.only(bottom: 32),
+                          margin: const EdgeInsets.only(bottom: 35),
                           width: MediaQuery.of(context).size.width / 2.3,
-                          height: 40,
+                          height: 42,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
-                            color: Colors.white,
+                            color: Colors.white24,
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -113,8 +115,9 @@ class _ImageViewState extends State<ImageView> {
                               Text(
                                 'Original',
                                 style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.w400,
+                                  color: Colors.white
                                 ),
                               ),
                             ],
