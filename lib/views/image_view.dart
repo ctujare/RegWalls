@@ -1,35 +1,36 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ImageView extends StatefulWidget {
-  String imgUrl;
-  String originalUrl;
-  ImageView({required this.imgUrl, required this.originalUrl});
-
+  final String imgUrl;
+  final String originalUrl;
+  const ImageView({super.key, required this.imgUrl, required this.originalUrl});
 
   @override
   State<ImageView> createState() => _ImageViewState();
 }
 
 class _ImageViewState extends State<ImageView> {
-  var filePath;
+  bool _downloading = false;
   bool _showContainer = false;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 200), () {
-      setState(() {
-        _showContainer = true;
-      });
-    });
+    Future.delayed(
+      const Duration(milliseconds: 200),
+      () {
+        setState(() {
+          _showContainer = true;
+        });
+      },
+    );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class _ImageViewState extends State<ImageView> {
           children: [
             Hero(
               tag: widget.imgUrl,
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: Image.network(
@@ -88,7 +89,7 @@ class _ImageViewState extends State<ImageView> {
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w400,
-                                      color: Colors.white
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
@@ -117,7 +118,7 @@ class _ImageViewState extends State<ImageView> {
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.white
+                                  color: Colors.white,
                                 ),
                               ),
                             ],
@@ -129,39 +130,88 @@ class _ImageViewState extends State<ImageView> {
                 ),
               ),
             ),
+            _downloading
+                ? Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          CircularProgressIndicator(),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Downloading...",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),
     );
   }
 
-
   _save() async {
-    var permission_status = await _askPermission();
+    setState(() {
+      _downloading = true;
+    });
+    var permissionStatus = await _askPermission();
 
-    if (permission_status) {
-
+    if (permissionStatus) {
       var downloadUrl = widget.imgUrl;
-      var response = await Dio().get(downloadUrl,
-          options: Options(responseType: ResponseType.bytes));
+      var response = await Dio()
+          .get(downloadUrl, options: Options(responseType: ResponseType.bytes));
       final result =
           await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
-      print(result);
+      if (kDebugMode) {
+        print(result);
+      }
+
+      setState(() {
+        _downloading = false;
+      });
+
+      if (!mounted) return;
       Navigator.pop(context);
     }
   }
 
   _saveOriginal() async {
-    var permission_status = await _askPermission();
+    var permissionStatus = await _askPermission();
 
-    if (permission_status) {
-
+    if (permissionStatus) {
+      setState(() {
+        _downloading = true;
+      });
       var downloadUrl = widget.originalUrl;
-      var response = await Dio().get(downloadUrl,
-          options: Options(responseType: ResponseType.bytes));
+      var response = await Dio()
+          .get(downloadUrl, options: Options(responseType: ResponseType.bytes));
       final result =
-      await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
-      print(result);
+          await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
+      if (kDebugMode) {
+        print(result);
+      }
+
+      setState(() {
+        _downloading = false;
+      });
+
+      if (result['isSuccess'] == true) {
+        SnackBar snackBar = const SnackBar(
+          content: Text("Image Saved"),
+          backgroundColor: Colors.green,
+        );
+
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+
+      if (!mounted) return;
       Navigator.pop(context);
     }
   }
@@ -174,7 +224,8 @@ class _ImageViewState extends State<ImageView> {
         openAppSettings();
       }
     } else {
-      if (await Permission.photos.request().isGranted || await Permission.storage.request().isGranted ) {
+      if (await Permission.photos.request().isGranted ||
+          await Permission.storage.request().isGranted) {
         return true;
       } else {
         openAppSettings();

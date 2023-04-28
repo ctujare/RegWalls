@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:regwalls/data/data.dart';
 import 'package:regwalls/model/categories_model.dart';
 import 'package:regwalls/model/wallpaper_mode.dart';
-import 'package:regwalls/views/category.dart';
-import 'package:regwalls/views/image_view.dart';
 import 'package:regwalls/views/search.dart';
 import 'package:regwalls/widget/widget.dart';
 import 'package:http/http.dart' as http;
+
+import 'image_category.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -19,7 +20,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<CategoriesModel> categories = [];
   List<WallpaperModel> wallpapers = [];
-  TextEditingController searchController = new TextEditingController();
+  TextEditingController searchController = TextEditingController();
 
   getTrendingWallpapers() async {
     var response = await http.get(
@@ -27,10 +28,8 @@ class _HomeState extends State<Home> {
       headers: {"Authorization": apiKey},
     );
 
-
     Map<String, dynamic> jsonData = jsonDecode(response.body);
     jsonData["photos"].forEach((element) {
-
       WallpaperModel wallpaperModel = WallpaperModel();
       wallpaperModel = WallpaperModel.fromMap(element);
       wallpapers.add(wallpaperModel);
@@ -59,8 +58,7 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20)),
+                color: Colors.white, borderRadius: BorderRadius.circular(20)),
             padding: const EdgeInsets.symmetric(horizontal: 12),
             margin: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -76,7 +74,9 @@ class _HomeState extends State<Home> {
                       ),
                       suffixIcon: GestureDetector(
                         onTap: () {
-                          print("Search ${searchController.text}");
+                          if (kDebugMode) {
+                            print("Search ${searchController.text}");
+                          }
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -86,7 +86,10 @@ class _HomeState extends State<Home> {
                             ),
                           );
                         },
-                        child: const Icon(Icons.search, color: Colors.black,),
+                        child: const Icon(
+                          Icons.search,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                   ),
@@ -125,11 +128,11 @@ class CategoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => Category(
-            categoryName: title.toLowerCase()
-          )
-        ));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ImageCategory(categoryName: title.toLowerCase())));
       },
       child: Container(
         margin: const EdgeInsets.only(right: 8),
@@ -144,9 +147,7 @@ class CategoryTile extends StatelessWidget {
           child: Text(
             title,
             style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 16),
+                color: Colors.white, fontWeight: FontWeight.w500, fontSize: 16),
           ),
         ),
       ),

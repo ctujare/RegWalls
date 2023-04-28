@@ -1,20 +1,20 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:regwalls/data/data.dart';
 import 'package:regwalls/model/wallpaper_mode.dart';
 import 'package:regwalls/widget/widget.dart';
 
-class Category extends StatefulWidget {
+class ImageCategory extends StatefulWidget {
   final String categoryName;
-  Category({required this.categoryName});
+  const ImageCategory({super.key, required this.categoryName});
 
   @override
-  State<Category> createState() => _CategoryState();
+  State<ImageCategory> createState() => _ImageCategoryState();
 }
 
-class _CategoryState extends State<Category> {
-
+class _ImageCategoryState extends State<ImageCategory> {
   List<WallpaperModel> wallpapers = [];
 
   getSearchWallpapers(String query) async {
@@ -24,11 +24,15 @@ class _CategoryState extends State<Category> {
       headers: {"Authorization": apiKey},
     );
 
-    print(response.body.toString());
+    if (kDebugMode) {
+      print(response.body.toString());
+    }
 
     Map<String, dynamic> jsonData = jsonDecode(response.body);
     jsonData["photos"].forEach((element) {
-      print(element);
+      if (kDebugMode) {
+        print(element);
+      }
       WallpaperModel wallpaperModel = WallpaperModel();
       wallpaperModel = WallpaperModel.fromMap(element);
       wallpapers.add(wallpaperModel);
@@ -36,7 +40,6 @@ class _CategoryState extends State<Category> {
 
     setState(() {});
   }
-
 
   @override
   void initState() {
@@ -51,8 +54,7 @@ class _CategoryState extends State<Category> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.black,
           title: brandName(),
-          elevation: 0.0
-      ),
+          elevation: 0.0),
       body: Container(
         color: Colors.black,
         child: Column(
@@ -73,4 +75,3 @@ class _CategoryState extends State<Category> {
     );
   }
 }
-

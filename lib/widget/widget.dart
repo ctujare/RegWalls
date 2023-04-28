@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:regwalls/model/wallpaper_mode.dart';
 import 'package:regwalls/views/image_view.dart';
-import 'dart:async';
-
-
 
 Widget brandName() {
   return Center(
@@ -23,13 +19,13 @@ Widget brandName() {
 Widget wallpapersList({required List<WallpaperModel> wallpapers, context}) {
   return Expanded(
     child: Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
       ),
       child: GridView.count(
         shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         crossAxisCount: 2,
         childAspectRatio: 0.6,
         mainAxisSpacing: 8,
@@ -38,19 +34,22 @@ Widget wallpapersList({required List<WallpaperModel> wallpapers, context}) {
           return GridTile(
             child: GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ImageView(imgUrl: wallpaper.src!.portrait, originalUrl: wallpaper.src!.original)
-                ));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ImageView(
+                            imgUrl: wallpaper.src!.portrait,
+                            originalUrl: wallpaper.src!.original)));
               },
               child: Hero(
                 tag: wallpaper.src!.portrait,
-                child: Container(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
-                      child: Image.network(
-                        wallpaper.src!.portrait,
-                        fit: BoxFit.cover,),
-                    )),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: Image.network(
+                    wallpaper.src!.portrait,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
           );
